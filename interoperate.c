@@ -15,7 +15,7 @@ void source(const char *name)
 }
 
 // Wrapper for R function "optimization," defined in optim.R file.
-void R_optimization(int size1, double par[], int size2,  int maxit[], int size3, char *text)
+void R_optimization(int size1, double par[], int size2,  int maxit[], int size3, char *method)
 {
     // Allocate an R vector of numeric values and copy a C double array into it.
     SEXP v1;
@@ -30,7 +30,7 @@ void R_optimization(int size1, double par[], int size2,  int maxit[], int size3,
     // Allocate an R vector and set a C character string into it.
     SEXP v3;
     PROTECT(v3 = allocVector(STRSXP, 1));
-    SET_STRING_ELT( v3, 0, mkChar(text) );
+    SET_STRING_ELT( v3, 0, mkChar(method) );
     UNPROTECT(1);
 
     // Setup a call to the R function.
@@ -65,13 +65,13 @@ int main(int argc, char *argv[])
     int r_argc = 2;
     char *r_argv[] = { "R", "--silent" };
     Rf_initEmbeddedR(r_argc, r_argv);
-    double v1[] = {1.2, 3.1, 4.5, 8.0, 9.8};
-    int v2[] = {10};
-    char *text = "Nelder-Mead";
+    double v1[] = {1.2};
+    int v2[] = {1000};
+    char *method = "Nelder-Mead";
 
     // Invoke a function in R
     source("optim.R");
-    R_optimization(5, v1, 1, v2, 3, text);
+    R_optimization(1, v1, 1, v2, 3, method);
 
     // Release R environment
     Rf_endEmbeddedR(0);
