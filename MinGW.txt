@@ -1,0 +1,12 @@
+// Change working directory (if required)
+
+// Display values in PATH
+echo $PATH
+
+// Add values to PATH
+PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/"
+PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/bin"
+PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/lib/omlibrary"
+
+// Run program
+omc OMC.mos
