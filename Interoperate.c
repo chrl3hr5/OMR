@@ -39,7 +39,6 @@ int  R_add(int alen, int a[])
     return result;
 }
 
-
 int interoperate(const int *V1, size_t V1_size, const int *V2, size_t V2_size)
 {
     // Intialize the embedded R environment to execute external R script
