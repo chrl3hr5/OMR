@@ -1,18 +1,7 @@
-// Prerequisites
-RHOME := "C:/PROGRA~1/R/R-4.0.2/"; 
-deleteFile("syscall.log"); getErrorString();
-system(getCompiler() + " -g -c -o Interoperate.o Interoperate.c -I" + RHOME + "include -L" + RHOME + "bin/x64 -lR -lm", "syscall.log"); getErrorString();
-readFile("syscall.log"); getErrorString();
-system("ar rcs libInteroperate.a Interoperate.o", "syscall.log"); getErrorString();
-readFile("syscall.log"); getErrorString();
-
-// Copying R.dll
-system("cp " + RHOME + "bin/x64/R.dll ./", "syscall.log"); getErrorString();
-
-// Loading Model
-readFile("syscall.log"); getErrorString();
+RHOME := "C:/PROGRA~1/R/R-4.0.2/";
+system(getCompiler() + " -g -c -o Interoperate.o Interoperate.c -I" + RHOME + "include -L" + RHOME + "bin/x64 -lR -lm"); getErrorString();
+system("ar rcs libInteroperate.a Interoperate.o"); getErrorString();
 loadFile("OMR.mo"); getErrorString();
-
-// Simulating Model
 setEnvironmentVar("PATH", getEnvironmentVar("PATH") + ";" + RHOME + "bin/x64/"); getErrorString();
 simulate(R_OM, stopTime=0.1); getErrorString();
+plot(result);

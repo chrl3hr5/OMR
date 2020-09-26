@@ -6,8 +6,9 @@ DEPENDENCIES = \
 *.mos \
 *.mo \
 Interoperate.c \
+Function.c \
+OMR.R \
 MinGW.txt \
-Sum.R \
 Makefile \
 
 CLEAN = `ls | grep -w -v -f deps.tmp`
@@ -30,6 +31,7 @@ clean:
 # since you got them from repository + your own new files)
 # then add them to the DEPENDENCIES. You can find the
 # list in deps.txt
+
 getdeps:
 	@echo $(DEPENDENCIES) | sed 's/ /\\\|/g' > deps.tmp
 	@echo $(CLEAN) | sed -r 's/deps.txt|deps.tmp//g' | sed 's/ / \\\n/g' > deps.txt

@@ -1,59 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include <Rmath.h>
-#include <Rinternals.h>
-#include <Rembedded.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
 
-// C version of R's source() function.
-void source(const char *name)
+int R_Operation(const int *V1, size_t V1_size, const int *V2, size_t V2_size)
 {
-  SEXP expr;
-  PROTECT(expr = lang2(install("source"), mkString(name)));
-  R_tryEval(expr, R_GlobalEnv, NULL);
-  UNPROTECT(1);  
-  printf("'source()' executed successfully\n");
-}
+  char cmd[100]="";
+  strcat(cmd, "Rscript OMR.R ");
+  char str1[2];
+  sprintf(str1, "%d", V1[0]); // store the integer value V1[0] as string representation
+  strcat(cmd, str1);
+  char str2[2];
+  sprintf(str2, " %d", V2[0]); // store the integer value V2[0] as string representation
+  strcat(cmd, str2);
+  printf("\nCheck the command : %s\n ", cmd);
 
-int  R_add(int alen, int a[])
-{
-    // Allocate an R vector and copy the C array into it.
-    SEXP arg;
-    PROTECT(arg = allocVector(INTSXP, alen));
-    memcpy(INTEGER(arg), a, alen * sizeof(int));
+  // pass inputs as command line arguments
+  // char *cmd = "Rscript test.R 5 100"; // static input 5 and 100 to add.R
 
-    // Setup a call to the R function
-    SEXP add_call;
-    PROTECT(add_call = lang2(install("add"), arg));
+  //create a buffer to read output from console
+  int buffersize = 100;
+  char buf[buffersize];
+  FILE *fp;
 
-    // Execute the function
-    int errorOccurred;
-    SEXP ret = R_tryEval(add_call, R_GlobalEnv, &errorOccurred);
-    printf("R returned: ");
-    double *val = REAL(ret);
-	for (int i = 0; i < LENGTH(ret); i++) printf("%f ", val[i]);
-    printf("\n");
-	int result = floor(val[0]);
-    UNPROTECT(2);
-    return result;
-}
+  if ((fp = popen(cmd, "r")) == NULL) {
+    printf("Error opening pipe!\n");
+    return -1;
+  }
+  int finalvalue;
+  while (fgets(buf, buffersize, fp) != NULL) {
+    // Do whatever you want here... // post proceess the result
+    //printf("%i %s", strlen(buf),buf);
+    char str[strlen(buf)];
+    strcpy(str, buf);
+    //printf("%s",str);
+    char final[2];
+    //printf("check char pos : %c", str[1]);
+    int index=0;
+    for (int i =0; i < strlen(buf)-1; i++)
+    {
+      if (i>3) // R outputs as [1] 100, we must skip the first 4 characters to read the actual value from R
+      {
+        //printf("\n check char pos : %c", str[i]);
+        final[index] = str[i];
+        index= index+1;
+      }
+    }
+    finalvalue =atoi(final); // convert the value to integer as the model expects result as integer
+    //printf("\n final value : %s", final);
+    printf("\n The result is : %d ", finalvalue);
+    return finalvalue;
 
-int interoperate(const int *V1, size_t V1_size, const int *V2, size_t V2_size)
-{
-    // Intialize the embedded R environment to execute external R script
-    int r_argc = 2;
-    char *r_argv[] = {"R", "--silent"};
-    Rf_initEmbeddedR(r_argc, r_argv);
-    source("Sum.R");
+  }
 
-	// Getting results from external R script
-    int arg[] = {V1[0], V2[0]};
-    int result=R_add(2, arg);
+  int status = pclose(fp);
+  if (status == -1) {
+    /* Error reported by pclose() */
+    fprintf(stderr, "%s\n", fp);
 
-    // Release the embedded R environment
-	Rf_endEmbeddedR(0);
-    printf("\n Exited the R embedded environment");
-    exit(0); // force exit from R embedded environment
-    return(result);
+  }
+  return 0;
 }

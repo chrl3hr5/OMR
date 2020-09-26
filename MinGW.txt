@@ -7,6 +7,10 @@ echo $PATH
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/bin"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/lib/omlibrary"
+PATH="$PATH:/C/PROGRA~1/R/R-4.0.2/bin"
+
+// Compiling C files
+R CMD SHLIB Function.c
 
 // Run program
-omc OMC.mos
+omc OMR.mos
