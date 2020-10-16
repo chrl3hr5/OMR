@@ -7,6 +7,7 @@ DEPENDENCIES = \
 *.mo \
 Interoperate.c \
 Function.c \
+Gradient.c \
 OMR.R \
 MinGW.txt \
 Makefile \

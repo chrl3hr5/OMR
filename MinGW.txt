@@ -11,6 +11,7 @@ PATH="$PATH:/C/PROGRA~1/R/R-4.0.2/bin"
 
 // Compiling C files
 R CMD SHLIB Function.c
+R CMD SHLIB Gradient.c
 
 // Run program
 omc OMR.mos
