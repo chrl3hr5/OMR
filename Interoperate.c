@@ -5,77 +5,76 @@
 #include <sys/types.h>
 #include <signal.h>
 
-int R_Operation(const int *par, size_t par_size, const char *method, const int *lower, size_t lower_size, const int *upper, size_t upper_size, const int *maxit, size_t maxit_size, const char *hessian)
+int R_Operation(double initial_par, const char *method, double lower, double upper, double maxit, const char *hessian, double* output, size_t output_size)
 {
   char cmd[1000]="";
   strcat(cmd, "Rscript OMR.R ");
+  
   char str1[100];
-  sprintf(str1, "%d", par[0]); // Store the integer value par[0] as string representation
+  sprintf(str1, "%g", initial_par); // Store the integer value initial_par as string representation
   strcat(cmd, str1);
   strcat(cmd, " ");
+  
   char str2[100];
-  sprintf(str2, "%s", method); // Store the string value method as string representation
+  sprintf(str2, "%s", method); // Store the string value method
   strcat(cmd, str2);
   strcat(cmd, " ");
+  
   char str3[100];
-  sprintf(str3, "%d", lower[0]); // Store the integer value lower[0] as string representation
+  sprintf(str3, "%g", lower); // Store the integer value lower as string representation
   strcat(cmd, str3);
   strcat(cmd, " ");
+  
   char str4[100];
-  sprintf(str4, "%d", upper[0]); // Store the integer value upper[0] as string representation
+  sprintf(str4, "%g", upper); // Store the integer value upper as string representation
   strcat(cmd, str4);
   strcat(cmd, " ");
+  
   char str5[100];
-  sprintf(str5, "%d", maxit[0]); // Store the integer value maxit[0] as string representation
+  sprintf(str5, "%g", maxit); // Store the integer value maxit as string representation
   strcat(cmd, str5);
   strcat(cmd, " ");
+  
   char str6[100];
-  sprintf(str6, "%s", hessian); // Store the string value hessian as string representation
+  sprintf(str6, "%s", hessian); // Store the string value hessian
   strcat(cmd, str6);
-  printf("\nCheck the command : %s\n ", cmd);
 
-  //Pass inputs as command line arguments
-  //char *cmd = "Rscript test.R 5 100"; // Static input 5 and 100 to test.R
+  printf("\nCheck the input : %s",cmd);
 
-  //Create a buffer to read output from console
-  int buffersize = 1000;
+  // Create a buffer to read output from console
+  int buffersize = 100;
   char buf[buffersize];
   FILE *fp;
 
   if ((fp = popen(cmd, "r")) == NULL) {
     printf("Error while opening pipe!\n");
-    return -1;
   }
-  int finalvalue;
+  
   while (fgets(buf, buffersize, fp) != NULL) {
-    //Add optional code for post processing of result
-    //printf("%i %s", strlen(buf),buf);
+    // printf("\nOutput value : %s", buf);
     char str[strlen(buf)];
     strcpy(str, buf);
-    //printf("%s",str);
-    char final[2];
-    //printf("Check char position : %c", str[1]);
-    int index=0;
-    for (int i =0; i < strlen(buf)-1; i++)
+
+    // printf("\n Copied Output value : %s", str);
+
+    // Split the string and store it in char array
+    char *p = strtok(str, " ");
+    char *array[5];
+    int i = 0;
+    while (p != NULL)
     {
-      if (i>3) // R outputs as [1] 100, first four characters must be skipped to read the actual value from R
-      {
-        //printf("\n Check char position : %c", str[i]);
-        final[index] = str[i];
-        index = index+1;
-      }
+      array[i++] = p;
+      p = strtok (NULL, " ");
     }
-    finalvalue =atoi(final); // convert the value to integer as the model expects result as an integer
-    printf("\n Final value : %s", final);
-    printf("\n The result is : %d ", finalvalue);
-    return finalvalue;
+    for (int i = 0; i < 5; ++i)
+    {
+      // printf("%s\n", array[i]);
+      // Copy the output
+      output[i] = atof(array[i]);
+	  // printf("%f\n", output[i]);
+    }
+    return 0;
   }
-
-  int status = pclose(fp);
-  if (status == -1) {
-    /* Error reported by pclose() */
-    fprintf(stderr, "%s\n", fp);
-
-  }
+  pclose(fp);
   return 0;
 }
