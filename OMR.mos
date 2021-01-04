@@ -1,5 +1,7 @@
 RHOME := "C:/PROGRA~1/R/R-4.0.2/";
 setCommandLineOptions({"+g=MetaModelica"});
+system("R CMD SHLIB Function.c");getErrorString();
+system("R CMD SHLIB Gradient.c");getErrorString();
 system(getCompiler() + " -g -c -o Interoperate.o Interoperate.c -I" + RHOME + "include -L" + RHOME + "bin/x64 -lR -lm"); getErrorString();
 system("ar rcs libInteroperate.a Interoperate.o"); getErrorString();
 loadFile("OMR.mo"); getErrorString();

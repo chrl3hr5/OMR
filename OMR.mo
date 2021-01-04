@@ -8,11 +8,6 @@ model R_OM
 	input Real maxit;
 	input String hessian;
     output Real[5] result;
-	Real par;
-	Real value;
-	Real fn_counts;
-	Real gr_counts;
-	Real convergence;
   external "C" annotation(Library={"Interoperate", "Function.dll", "Gradient.dll"}, LibraryDirectory="modelica://R_OM");
   end R_Operation;
 
