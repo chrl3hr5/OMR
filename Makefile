@@ -8,6 +8,7 @@ Interoperate.c \
 LICENSE \
 Makefile \
 MinGW.txt \
+Instructions.txt \
 *.mo \
 *.mos \
 OMR.R \
