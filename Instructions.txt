@@ -9,7 +9,7 @@ PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/bin"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/lib/omlibrary"
 PATH="$PATH:/C/PROGRA~1/R/R-4.0.3/bin"
 
-// Compiling C files
+// Creating required DLL files
 R CMD SHLIB Function.c
 R CMD SHLIB Gradient.c
 
