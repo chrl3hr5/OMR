@@ -1,6 +1,6 @@
 // Change working directory (if required)
 
-// Display values in PATH
+// Display values in PATH (optional)
 echo $PATH
 
 // Add values to PATH (make necessary changes to the PATH and software version/s before executing commands)
