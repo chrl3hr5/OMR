@@ -39,7 +39,7 @@ int R_Operation(double initial_par, const char *method, double lower, double upp
   sprintf(str6, "%s", hessian); // Store the string value hessian
   strcat(cmd, str6);
 
-  printf("\nCheck the input : %s",cmd);
+  // printf("\nCheck the input : %s",cmd);
 
   // Create a buffer to read output from console
   int buffersize = 100;
