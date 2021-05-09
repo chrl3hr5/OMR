@@ -1,19 +1,13 @@
 # Dependency files that are not .lua or Makefile
 # Add them here or they will be cleaned
 DEPENDENCIES = \
-.gitignore \
 Function.c \
 Gradient.c \
 Interoperate.c \
-LICENSE \
 Makefile \
-MinGW.txt \
-Instructions.txt \
 *.mo \
 *.mos \
 OMR.R \
-OMR.Rproj \
-*.md \
 
 CLEAN = `ls | grep -w -v -f deps.tmp`
 
