@@ -1,17 +1,20 @@
 // Change working directory (if required)
 
-// Display values in PATH (optional)
+// Display values in PATH (optional) -
 echo $PATH
 
-// Add values to PATH (make necessary changes to the PATH and software version/s before executing commands)
+// Add values to PATH (make necessary changes to the PATH and software version/s before executing commands) -
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/bin"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/lib/omlibrary"
 PATH="$PATH:/C/PROGRA~1/R/R-4.0.3/bin"
 
-// Creating required DLL files
+// Creating required DLL file/s associated with external C file/s (if needed) -
+R CMD SHLIB file_name.c
+// For example, to perform general-purpose optimization, DLLs associated with the two C files, Function.C and Gradient.C, are required.
+// Run the following commands to generate the DLLs associated with Function.C and Gradient.C -
 R CMD SHLIB Function.c
 R CMD SHLIB Gradient.c
 
-// Run program
+// Run the main program -
 omc OMR.mos
