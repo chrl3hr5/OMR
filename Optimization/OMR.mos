@@ -1,4 +1,4 @@
-RHOME := "C:/PROGRA~1/R/R-4.0.2/";
+RHOME := "C:/PROGRA~1/R/R-3.6.3/";
 setCommandLineOptions({"+g=MetaModelica"});
 system("R CMD SHLIB Function.c");getErrorString();
 system("R CMD SHLIB Gradient.c");getErrorString();
@@ -6,5 +6,5 @@ system(getCompiler() + " -g -c -o Interoperate.o Interoperate.c -I" + RHOME + "i
 system("ar rcs libInteroperate.a Interoperate.o"); getErrorString();
 loadFile("OMR.mo"); getErrorString();
 setEnvironmentVar("PATH", getEnvironmentVar("PATH") + ";" + RHOME + "bin/x64/"); getErrorString();
-simulate(R_OM, numberOfIntervals=1, stopTime=0.1); getErrorString();
+simulate(R_OM, numberOfIntervals=1, stopTime=0.1, outputFormat="csv"); getErrorString();
 plot({par, value, fn_counts, gr_counts, convergence});
