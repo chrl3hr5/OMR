@@ -7,6 +7,7 @@ Interoperate.c \
 Makefile \
 *.mo \
 *.mos \
+*.csv \
 OMR.R \
 
 CLEAN = `ls | grep -w -v -f deps.tmp`
