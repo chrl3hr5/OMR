@@ -43,7 +43,7 @@ int R_Operation(double time_start, double time_end, double time_step, double par
   // printf("\nCheck the input : %s",cmd);
 
   // Create a buffer to read output from console
-  int buffersize = 10000;
+  int buffersize = 100000;
   char buf[buffersize];
   FILE *fp;
 
@@ -60,14 +60,14 @@ int R_Operation(double time_start, double time_end, double time_step, double par
 
     // Split the string and store it in char array
     char *p = strtok(str, " ");
-    char *array[1001];
+    char *array[2002];
     int i = 0;
     while (p != NULL)
     {
       array[i++] = p;
       p = strtok (NULL, " ");
     }
-    for (int i = 0; i < 1001; ++i)
+    for (int i = 0; i < 2002; ++i)
     {
       // printf("%s\n", array[i]);
       // Copy the output
