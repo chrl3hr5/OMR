@@ -42,7 +42,7 @@ int R_Operation(double initial_par, const char *method, double lower, double upp
   // printf("\nCheck the input : %s",cmd);
 
   // Create a buffer to read output from console
-  int buffersize = 100;
+  int buffersize = 100000;
   char buf[buffersize];
   FILE *fp;
 
