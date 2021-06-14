@@ -17,7 +17,8 @@ parameters <- c(r = as.numeric(parameter_r), K = as.numeric(parameter_K))
 # 3) Initial conditions
 state <- c(x = as.numeric(state))
 
-# Installing and loading package
+# Loading package
+if(!("deSolve" %in% rownames(installed.packages()))){install.packages("deSolve",lib = .libPaths()[1],repos = "http://cran.us.r-project.org")}
 library(deSolve)
 
 # Creating logistic equation
@@ -35,9 +36,9 @@ out <- ode(y = state, times = time, func = logistic, parms = parameters)
 out <- as.data.frame(out)
 
 # Results
-res_x <- out$x
+result <- c(out$time,out$x)
 
-cat(res_x)
+cat(result)
 
 # Storing output to file
 # cat(result,file="Output.txt",sep="\n")
