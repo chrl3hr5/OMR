@@ -5,3 +5,4 @@ system("ar rcs libInteroperate.a Interoperate.o"); getErrorString();
 loadFile("OMR.mo"); getErrorString();
 setEnvironmentVar("PATH", getEnvironmentVar("PATH") + ";" + RHOME + "bin/x64/"); getErrorString();
 simulate(R_OM, numberOfIntervals=1, stopTime=0.1, outputFormat="csv"); getErrorString();
+plot({output_value[1],output_value[2],time_value[1],time_value[2]});
