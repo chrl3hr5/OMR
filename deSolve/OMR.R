@@ -31,7 +31,7 @@ logistic <- function(t, state, parameters){
   )
 }
 
-# Solving Ordinary Differential Equation
+# Solving ordinary differential equation
 out <- ode(y = state, times = time, func = logistic, parms = parameters)
 out <- as.data.frame(out)
 
