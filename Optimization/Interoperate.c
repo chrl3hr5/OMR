@@ -11,32 +11,32 @@ int R_Operation(double initial_par, const char *method, double lower, double upp
   strcat(cmd, "Rscript OMR.R ");
   
   char str1[100];
-  sprintf(str1, "%g", initial_par); // Store the integer value initial_par as string representation
+  sprintf(str1, "%g", initial_par); // Store the integer value "initial_par" as a string
   strcat(cmd, str1);
   strcat(cmd, " ");
   
   char str2[100];
-  sprintf(str2, "%s", method); // Store the string value method
+  sprintf(str2, "%s", method); // Store the string value "method"
   strcat(cmd, str2);
   strcat(cmd, " ");
   
   char str3[100];
-  sprintf(str3, "%g", lower); // Store the integer value lower as string representation
+  sprintf(str3, "%g", lower); // Store the integer value "lower" as a string
   strcat(cmd, str3);
   strcat(cmd, " ");
   
   char str4[100];
-  sprintf(str4, "%g", upper); // Store the integer value upper as string representation
+  sprintf(str4, "%g", upper); // Store the integer value "upper" as a string
   strcat(cmd, str4);
   strcat(cmd, " ");
   
   char str5[100];
-  sprintf(str5, "%g", maxit); // Store the integer value maxit as string representation
+  sprintf(str5, "%g", maxit); // Store the integer value "maxit" as a string
   strcat(cmd, str5);
   strcat(cmd, " ");
   
   char str6[100];
-  sprintf(str6, "%s", hessian); // Store the string value hessian
+  sprintf(str6, "%s", hessian); // Store the string value "hessian"
   strcat(cmd, str6);
 
   // printf("\nCheck the input : %s",cmd);
@@ -57,7 +57,7 @@ int R_Operation(double initial_par, const char *method, double lower, double upp
 
     // printf("\n Copied Output value : %s", str);
 
-    // Split the string and store it in char array
+    // Split the string and store it in a character array
     char *p = strtok(str, " ");
     char *array[5];
     int i = 0;
