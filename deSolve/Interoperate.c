@@ -11,32 +11,32 @@ int R_Operation(double time_start, double time_end, double time_step, double par
   strcat(cmd, "Rscript OMR.R ");
   
   char str1[100];
-  sprintf(str1, "%g", time_start); // Store the integer value time_start as string representation
+  sprintf(str1, "%g", time_start); // Store the integer value "time_start" as a string
   strcat(cmd, str1);
   strcat(cmd, " ");
   
   char str2[100];
-  sprintf(str2, "%g", time_end); // Store the integer value time_end as string representation
+  sprintf(str2, "%g", time_end); // Store the integer value "time_end" as a string
   strcat(cmd, str2);
   strcat(cmd, " ");
   
   char str3[100];
-  sprintf(str3, "%g", time_step); // Store the real value time_step as string representation
+  sprintf(str3, "%g", time_step); // Store the real value "time_step" as a string
   strcat(cmd, str3);
   strcat(cmd, " ");
   
   char str4[100];
-  sprintf(str4, "%g", parameter_r); // Store the real value parameter_r as string representation
+  sprintf(str4, "%g", parameter_r); // Store the real value "parameter_r" as a string
   strcat(cmd, str4);
   strcat(cmd, " ");
   
   char str5[100];
-  sprintf(str5, "%g", parameter_K); // Store the integer value parameter_K as string representation
+  sprintf(str5, "%g", parameter_K); // Store the integer value "parameter_K" as a string
   strcat(cmd, str5);
   strcat(cmd, " ");
   
   char str6[100];
-  sprintf(str6, "%g", state); // Store the real value state as string representation
+  sprintf(str6, "%g", state); // Store the real value "state" as a string
   strcat(cmd, str6);
   strcat(cmd, " ");
 
@@ -58,7 +58,7 @@ int R_Operation(double time_start, double time_end, double time_step, double par
 
     // printf("\n Copied Output value : %s", str);
 
-    // Split the string and store it in char array
+    // Split the string and store it in a character array
     char *p = strtok(str, " ");
     char *array[2002];
     int i = 0;
