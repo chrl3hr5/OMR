@@ -8,14 +8,14 @@ upper <- args[4]
 maxit <- args[5]
 hessian <- eval(parse(text=args[6]))
 
-# Replace with "Function.so" for Linux.
+# Replace with "Function.so" for Linux
 dyn.load('Function.dll')
 fn <- function(x) 
   {
     .Call("fn", x)
   }
 
-# Replace with "Gradient.so" for Linux.
+# Replace with "Gradient.so" for Linux
 dyn.load('Gradient.dll')
 gr <- function(x) 
 {
@@ -58,5 +58,5 @@ res_convergence <- as.double(res$convergence)
 
 cat(res_par,res_value,res_fn_counts,res_gr_counts,res_convergence)
 
-# Storing output to file.
+# Storing output to file
 # cat(result,file="Output.txt",sep="\n")
