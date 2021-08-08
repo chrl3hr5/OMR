@@ -3,7 +3,7 @@
 // Display values in PATH (optional) -
 echo $PATH
 
-// Add values to PATH (make necessary changes to the PATH and software version/s before executing commands) -
+// Add values to PATH (make necessary changes to the PATH and software version/s before executing the following commands) -
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/bin"
 PATH="$PATH:/C/PROGRA~1/OpenModelica1.16.0-dev-64bit/lib/omlibrary"
