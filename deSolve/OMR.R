@@ -1,3 +1,7 @@
+# Loading package
+if(!("deSolve" %in% rownames(installed.packages()))){install.packages("deSolve",lib = .libPaths()[1],repos = "http://cran.us.r-project.org")}
+library(deSolve)
+
 args <- commandArgs(trailingOnly = TRUE)
 
 # Arguments
@@ -16,10 +20,6 @@ time <- as.numeric(time)
 parameters <- c(r = as.numeric(parameter_r), K = as.numeric(parameter_K))
 # 3) Initial conditions
 state <- c(x = as.numeric(state))
-
-# Loading package
-if(!("deSolve" %in% rownames(installed.packages()))){install.packages("deSolve",lib = .libPaths()[1],repos = "http://cran.us.r-project.org")}
-library(deSolve)
 
 # Creating logistic equation
 logistic <- function(t, state, parameters){
