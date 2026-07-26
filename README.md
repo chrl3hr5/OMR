@@ -31,6 +31,9 @@ The interface was developed and tested under the following configuration:
 ## How to Use
 
 1. Download and unzip the OMR GitHub repository files present [here](https://github.com/chrl3hr5/OMR).
+<p align="center">
+  <img width="955" height="489" alt="OMR GitHub repository." src="https://github.com/user-attachments/assets/fa6c84eb-b078-4810-9fea-b12d6b787a32" />
+</p>
 
 2. Run "msys2_shell" as administrator which is present in the OpenModelica installation directory, as shown in the figure below. "msys2" is a software distribution and building platform for Windows which provides a UNIX-like interface [4].
 <p align="center">
