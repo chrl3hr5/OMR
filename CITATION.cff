@@ -10,7 +10,7 @@ authors:
 - family-names: "Palanisamy"
   given-names: "Arunkumar"
   orcid: "https://orcid.org/0000-0002-0079-8783"
-title: "OMR: Interoperability between R and OpenModelica "
+title: "OMR: Interoperability between R and OpenModelica"
 version: 1.0.0
 doi: 10.5281/zenodo.21607360
 date-released: 2026-07-26
