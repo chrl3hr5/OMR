@@ -136,8 +136,7 @@ month = jul,
 title = {{OMR: Interoperability between R and OpenModelica }},
 url = {https://github.com/chrl3hr5/OMR},
 version = {1.0.0},
-year = {2026}
-}
+year = {2026}}
 ```
 
 ---
