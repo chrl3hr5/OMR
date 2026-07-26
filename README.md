@@ -125,7 +125,7 @@ before executing the commands.*
 If you use this interface or build upon this project in your research, please cite the repository:
 
 ### Plain Text
-> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica  (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
+> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
 
 ### BibTeX
 ```bibtex
@@ -133,10 +133,11 @@ If you use this interface or build upon this project in your research, please ci
 author = {Singh, Digvijay and Moudgalya, Kannan and Palanisamy, Arunkumar},
 doi = {10.5281/zenodo.21607360},
 month = jul,
-title = {{OMR: Interoperability between R and OpenModelica }},
+title = {{OMR: Interoperability between R and OpenModelica}},
 url = {https://github.com/chrl3hr5/OMR},
 version = {1.0.0},
-year = {2026}}
+year = {2026}
+}
 ```
 
 ---
