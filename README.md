@@ -3,6 +3,8 @@
 Interoperability between R and OpenModelica
 </h3>
 
+[![DOI](https://zenodo.org/badge/287344008.svg)](https://doi.org/10.5281/zenodo.21607359)
+
 ---
 
 ## Introduction
