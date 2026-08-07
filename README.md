@@ -7,7 +7,7 @@ Interoperability between R and OpenModelica
 
 ---
 
-## Introduction
+# Introduction
 
 <div align="justify">
 OpenModelica is a free and open-source environment for modeling, simulating, optimizing and analyzing complex dynamic systems. It is based on the Modelica modeling language [1]. It has limited statistical capabilities. The motivation behind this project is to enhance OpenModelica's statistical functionalities. It was achieved by developing interoperability between it and another open-source programming language known as R. R is a language and environment for statistical computing and graphics [2].
@@ -21,7 +21,7 @@ It was a challenging problem. At the time of development, there was no interface
 
 ---
 
-## System Specifications
+# System Specifications
 
 The interface was developed and tested under the following configuration:
 - Windows 10 (64-bit operating system) machine
@@ -30,14 +30,118 @@ The interface was developed and tested under the following configuration:
 
 ---
 
-## How to Use
+# How it Works
+
+As it is possible to run external C code in OpenModelica, we took advantage of this feature to connect with R using two different methods -
+1. Using R API.
+2. Running external R Script.
+
+## Using R API
+
+R API allows user access to entry points in the R executable/DLL (Dynamic Link Library) that can be called from C code. These entry points are declared in the installed header files associated with R [4]. Writing R Extensions, is a manual for R written by the R Core Team [2] which provides information to access the most stable entry points [4].
+
+The R API makes it possible to utilize various R functions from C by adding appropriate header files to the C code. Following is the procedure to implement interoperability between R and OpenModelica using the R API -
+1. Creating an OpenModelica model.
+2. Simulating the model and executing the external C code.
+3. Running R program from the external C code.
+4. Ending the simulation after obtaining results back into the OpenModelica model.
+
+## Running external R Script
+
+In this method we run an external R script from OpenModelica via C. The external R script contains functions which are needed to be implemented depending upon the problem statement and receives inputs from OpenModelica. The functions can be from base R or any other package available in R. This method overcomes the limitations of R API by giving the user option to work with functions from any package in R. The complete process is similar to the one used in the previous method, namely -
+1. Creating an OpenModelica model.
+2. Simulating the model and executing the external C code.
+3. Running R program from the external C code.
+4. Ending the simulation after obtaining results back into the OpenModelica model.
+
+The following subsections shall explain each step in detail by making use of the below mentioned statistical computation examples -
+1. General-purpose Optimization
+2. Solving Ordinary Differential Equations
+
+For the implementation of any new statistical operation, changes are needed to be made in the code files. For a better understanding of the changes to be made, the following sections shall also display the differences in code used for implementing **General-purpose Optimization** and solving **Ordinary Differential Equations**, respectively.
+
+*Note: For this method of interoperability between R and OpenModelica, it is necessary to know in advance the data type and count of outputs to be obtained from the R program.*
+
+### General-purpose Optimization
+
+#### Creating an OpenModelica model
+
+The model contains a function, an algorithm with input and output variables and a call to external C code, "Interoperate.c" and DLL (Dynamic Link Library) files. The input variables, namely "initial_par", "method", "lower", "upper", "maxit" and "hessian", are in association with the parameters used in the "optim()" function of R that performs function optimization. Each input variable is given some value which is later passed to the external C code. The output variables include "par", "value", "fn_counts", "gr_counts" and "convergence". Their values are obtained from the external C code "Interoperate.c". The DLL files are associated with two additional C code files required by the R program for its optimization operation.
+
+The code for OpenModelica model is given in the [OMR.mo](Optimization/OMR.mo) file.
+
+#### Simulating the model and executing the external C code
+
+The simulation begins by executing the OpenModelica model and is followed by running the external C code (Interoperate.c). The C code passes all input values from the OpenModelica model to the R program and runs it via the command line. Once the processing is done, the C code reads the output printed over the console by the R program and delivers it to the OpenModelica model.
+
+The C code is given in the [Interoperate.c](Optimization/Interoperate.c) file. The "R_Operation" function in the C code takes in all the input values provided by the OpenModelica model, stores them as string values, and then passes them to the R program for processing via command line. It later reads the output, which is generated and printed over the console by the R program as a single string value. Then the string is split into multiple strings using a single space as the delimiter. Finally, the obtained values are stored in a character array. For this operation, it is necessary to know the desired number of outputs in advance. Later, each value of the character array is converted into a floating-point number and passed to the OpenModelica model.
+
+#### Running R program from the external C code
+
+The R program optimizes a mathematical function using a variety of methods. Some methods also require the presence of a gradient. Therefore, two additional C code files were created, one containing the function to be optimized, "Function.c" and the other containing the gradient, "Gradient.c". Both files include a simple mathematical function. Later, the DLLs associated with these two C files were created so that their content becomes accessible to the R program. The "Function.c" file's code represents the following equation -
+
+$$y = 10 * \sin(0.3 * x) * \sin(1.3 * x^2) + 0.00001 * x^4 + 0.2 * x + 80$$
+
+And the "Gradient.c" file's code represents the following equation -
+
+$$y = 10 * (\sin(0.3 * x) * (2.6 * (x * \cos(1.3 * x^2)))) + 0.3 * (\cos(0.3 * x) * \sin(1.3 * x^2))) + 0.00004 * x^3 + 0.2$$
+
+At the C-level, all R objects are stored in a common datatype, the SEXP, or S-expression. All R objects are S-expressions so every C function that is created must return a SEXP as output and take SEXPs as inputs. A SEXP is a variant type, with subtypes for all R's data structures. REALSXP type is for a numeric vector. "allocVector()" is a function which creates an R-level object. It takes two arguments, the type of SEXP (or SEXPTYPE) to create, and the length of the vector. "PROTECT()" function is used to tell R that an object is in use and shouldn't be deleted if the garbage collector is activated. It is necessary to make sure that every protected object is unprotected. The function "UNPROTECT()" unprotects protected objects. It takes a single integer argument, n, and unprotects the last n objects that were protected. The number of protects and unprotects must match [5]. To use the above mentioned types and functions, "R.h" and "Rinternals.h" header files were included in the code.
+
+When the R code gets executed, it first access the values passed to it via command-line by making use of the "commandArgs()" function and stores them in separate variables. It then reads the content of the additional C files ("Function.C" and "Gradient.C") by loading their associated DLLs with the help of the "dyn.load()" function. After obtaining all the necessary input data, depending upon the method of optimization ("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN" or "Brent") passed to it, it performs the required optimization operation. Once the operation ends successfully, it unloads all DLLs using the "dyn.unload()" function and prints the final output over the console. The complete R code is given in the [OMR.R](Optimization/OMR.R) file.
+
+#### Ending the simulation after obtaining results back into the OpenModelica model
+
+The results printed over the console by R were later read by the C code (Interoperate.C) and the obtained values were stored in a single character array. The size of the character array must be declared in advance and it depends upon the expected number of output values to be obtained from R. Each element of the character array is then passed as a numeric value back to the OpenModelica model. These numeric values were then stored in the output variables, namely "par", "value", "fn_counts", "gr_counts" and "convergence." Following is a plot of the obtained values -
+
+<p align="center">
+  <img width="641" height="383" alt="Plotting results obtained after simulating the OpenModelica model." src="https://github.com/user-attachments/assets/db7bb147-aa6d-4ea0-a501-85775b48a8a7" />
+</p>
+
+The simulation ends after returning a CSV file containing values of the output variables with the name "R_OM_res.csv".
+
+### Solving Ordinary Differential Equations
+
+#### Creating an OpenModelica model
+
+Similar to the previous section, the OpenModelica model contains a function, an algorithm with input and output variables and a call to external C code, "Interoperate.C." But this time, no DLL (Dynamic Link Library) files are required because the ordinary differential equations are written in R itself. It is optional for the user to define the mathematical functions to operate upon either in C or R depending upon his or her preference. The input variables, namely "time_start", "time_end", "time_step", "parameter_r", "parameter_K" and "state", are in association with the parameters used in the "ode()" function of the "deSolve" package of R. The "ode()" function solves a system of ordinary differential equations in R. Each input variable is given some value which is later passed to the external C code. The output variables are "time_value" and "output_value". Their values are obtained from the external C code "Interoperate.C".
+
+The code for OpenModelica model is given in the [OMR.mo](deSolve/OMR.mo) file.
+
+#### Simulating the model and executing the external C code
+
+The simulation begins in the exact same manner as described previously. However, some changes were made to the "Interoperate.c" file's code. Specifically, the parameters associated with the "R_Operation" function were changed according to the variables defined in the OpenModelica model. The size of the character array which stores the result obtained from R, was changed from 5 to 2002. The increase in size is due to the expectation of obtaining 2002 output values from R.
+
+#### Running R program from the external C code
+
+The R program defines and solves a differential equation (logistic equation) by making use of the "ode()" function from "deSolve" package. Following is an example equation -
+
+$$\frac{\partial x}{\partial t} = rx\left(1 - \frac{x}{K}\right)$$
+
+The complete R code used to solve the above mentioned differential equation is given in the [OMR.R](deSolve/OMR.R) file.
+
+When the R code gets executed, it first checks for the availability of "deSolve" package among the installed packages and if found absent installs it. Similar to the R code shown in the previous section, it also stores the values passed to it via command-line. It then creates the time sequence for which the output is required, combines the input parameters "r" and "K" into a single vector and setup the initial (state) value for the ordinary differential equation to be solved. Finally it makes use of the "ode()" function to solve the equation stored in the variable "logistic" and prints the final output over the console.
+
+#### Ending the simulation after obtaining results back into the OpenModelica model
+
+As described previously, the results printed over the console by R were passed as numeric values back to the OpenModelica model. These numeric values were then stored in the output variables, namely "time_value" and "output_value." Following is a plot of some of the obtained values -
+
+<p align="center">
+  <img width="641" height="383" alt="Plotting results obtained after simulating the OpenModelica model." src="https://github.com/user-attachments/assets/205843c7-3e45-4e92-b4df-7ecaa6b60f8c" />
+</p>
+
+The simulation ends after returning a CSV file containing values of the output variables with the name "R_OM_res.csv".
+
+---
+
+# How to Use
 
 1. Download and unzip the OMR GitHub repository files present [here](https://github.com/chrl3hr5/OMR).
 <p align="center">
   <img width="955" height="489" alt="OMR GitHub repository." src="https://github.com/user-attachments/assets/fa6c84eb-b078-4810-9fea-b12d6b787a32" />
 </p>
 
-2. Run "msys2_shell" as administrator which is present in the OpenModelica installation directory, as shown in the figure below. "msys2" is a software distribution and building platform for Windows which provides a UNIX-like interface [4].
+2. Run "msys2_shell" as administrator which is present in the OpenModelica installation directory, as shown in the figure below. "msys2" is a software distribution and building platform for Windows which provides a UNIX-like interface [6].
 <p align="center">
   <img width="693" height="475" alt="Running 'msys2_shell' from the OpenModelica installation directory." src="https://github.com/user-attachments/assets/fd612d95-8176-4b79-86cc-753684d06aa4" />
 </p>
@@ -108,7 +212,9 @@ before executing the commands.*
 
 ---
 
-## Publication Details
+# Workshop Presentation
+
+This work was presented at the OpenModelica Annual Workshop 2022; complete details regarding the event, presentation date, and organizers are provided in the table below.
 
 | Attribute | Details |
 | :--- | :--- |
@@ -120,14 +226,14 @@ before executing the commands.*
 
 ---
 
-## Citation
+# Citation
 
 If you use this interface or build upon this project in your research, please cite the repository:
 
-### Plain Text
+## Plain Text
 > Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
 
-### BibTeX
+## BibTeX
 ```bibtex
 @software{Singh_OMR_Interoperability_between_2026,
 author = {Singh, Digvijay and Moudgalya, Kannan and Palanisamy, Arunkumar},
@@ -142,9 +248,11 @@ year = {2026}
 
 ---
 
-## References
+# References
 
 [1] P. Fritzson et al., “The OpenModelica Integrated Environment for Modeling, Simulation, and Model-Based Development,” Model. Identif. Control, vol. 41, no. 4, pp. 241–295, 2020, doi: 10.4173/mic.2020.4.1.  
 [2] R Core Team, R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing, 2021. [Online]. Available: https://www.R-project.org/  
 [3] Open Source Modelica Consortium, “OpenModelica User’s Guide.” Open Source Modelica Consortium (OSMC), c/o Linköpings universitet, Department of Computer and Information Science, SE-58183 Linköping, Sweden, Linköping, Sweden, Apr. 06, 2021. [Online]. Available: https://openmodelica.org/doc/OpenModelicaUsersGuide/1.16/  
-[4] MSYS2 Software Distribution and Building Platform for Windows. [Online]. Available: https://www.msys2.org/
+[4] R Core Team, “Writing R Extensions.” R Foundation for Statistical Computing, Vienna, Austria, 2021. [Online]. Available: https://cran.r-project.org/doc/manuals/r-release/R-exts.html  
+[5] H. Wickham, Advanced R. in Chapman &Hall/CRC the R Series. Boca Raton: Chapman & Hall, 2015.  
+[6] MSYS2 Software Distribution and Building Platform for Windows. [Online]. Available: https://www.msys2.org/
