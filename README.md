@@ -246,13 +246,13 @@ This work was presented at the OpenModelica Annual Workshop 2022; complete detai
 If you use this interface or build upon this project in your research, please cite the repository:
 
 ## Plain Text
-> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.1.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
+> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.1.0) [Computer software]. https://doi.org/10.5281/zenodo.22084296
 
 ## BibTeX
 ```bibtex
 @software{Singh_OMR_Interoperability_between_2026,
 author = {Singh, Digvijay and Moudgalya, Kannan and Palanisamy, Arunkumar},
-doi = {10.5281/zenodo.21607360},
+doi = {10.5281/zenodo.22084296},
 month = aug,
 title = {{OMR: Interoperability between R and OpenModelica}},
 url = {https://github.com/chrl3hr5/OMR},
