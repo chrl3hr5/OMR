@@ -54,7 +54,7 @@ While the R API offers broad functionality, its scope was limited at the time of
 
 ## Running external R script
 
-In this method we run an external R script from OpenModelica via C. The external R script contains functions which are needed to be implemented depending upon the problem statement and it receives inputs from OpenModelica. The functions can be from base R or form a user-installed R package. This method overcomes the limitations of R API by giving the user option to work with functions from any package in R. Except for minor adjustments, the procedure to implement interoperability is the same as shown in the previous method -
+In this method we run an external R script from OpenModelica via C. The external R script contains functions which are needed to be implemented depending upon the problem statement and it receives inputs from OpenModelica. The functions can be from base R or form a user-installed R package. This method overcomes the limitations of R API by giving the user option to work with functions from any package in R. Except for minor adjustments, the procedure to implement interoperability is the same as shown in the [previous](#applying-the-r-api) method -
 1. Creating an OpenModelica model.
 2. Simulating the model and executing the external C code.
 3. Running R program from the external C code.
@@ -120,13 +120,13 @@ The simulation ends after returning a CSV file containing values of the output v
 
 #### Creating an OpenModelica model
 
-Similar to the previous section, the OpenModelica model contains a function, an algorithm with input and output variables and a call to external C code, [Interoperate.c](deSolve/Interoperate.c). But this time, no DLL files are required because the ordinary differential equations are written in R itself. It is optional for the user to define the mathematical functions to operate upon either in C or R depending on their preference. The input variables, namely `time_start`, `time_end`, `time_step`, `parameter_r`, `parameter_K` and `state`, are in association with the parameters used in the `ode()` function of the `deSolve` package of R [6]. The `ode()` function solves a system of ordinary differential equations in R. Each input variable is given some value which is later passed to the external C code. The output variables are `time_value` and `output_value`. Their values are obtained from the external C code [Interoperate.c](deSolve/Interoperate.c).
+Similar to the [previous section](#general-purpose-optimization), the OpenModelica model contains a function, an algorithm with input and output variables and a call to external C code, [Interoperate.c](deSolve/Interoperate.c). But this time, no DLL files are required because the ordinary differential equations are written in R itself. It is optional for the user to define the mathematical functions to operate upon either in C or R depending on their preference. The input variables, namely `time_start`, `time_end`, `time_step`, `parameter_r`, `parameter_K` and `state`, are in association with the parameters used in the `ode()` function of the `deSolve` package of R [6]. The `ode()` function solves a system of ordinary differential equations in R. Each input variable is given some value which is later passed to the external C code. The output variables are `time_value` and `output_value`. Their values are obtained from the external C code [Interoperate.c](deSolve/Interoperate.c).
 
 The code for OpenModelica model is given in the [OMR.mo](deSolve/OMR.mo) file.
 
 #### Simulating the model and executing the external C code
 
-The simulation begins in the exact same manner as described previously. However, some changes were made to the [Interoperate.c](Optimization/Interoperate.c) file's code. Specifically, the parameters associated with the `R_Operation` function were changed according to the variables defined in the OpenModelica model. The size of the character array, which stores the result obtained from R, was changed from 5 to 2002. This increase in size is due to the expectation of obtaining 2002 output values from R.
+The simulation begins in the exact same manner as described [previously](#general-purpose-optimization). However, some changes were made to the [Interoperate.c](Optimization/Interoperate.c) file's code. Specifically, the parameters associated with the `R_Operation` function were changed according to the variables defined in the OpenModelica model. The size of the character array, which stores the result obtained from R, was changed from 5 to 2002. This increase in size is due to the expectation of obtaining 2002 output values from R.
 
 #### Running R program from the external C code
 
@@ -138,11 +138,11 @@ The R program defines and solves a differential equation (logistic equation) by 
 
 The complete R code used to solve the above mentioned differential equation is given in the [OMR.R](deSolve/OMR.R) file.
 
-When the R code gets executed, it first checks for the availability of `deSolve` package among the installed packages and if found absent installs it. Similar to the R code mentioned in the previous section, it also stores the values passed to it via command-line. It then creates the time sequence for which the output is required, combines the input parameters `r` and `K` into a single vector and setup the initial (state) value to be solved for the associated ordinary differential equation. Finally it makes use of the `ode()` function to solve the equation stored in the variable `logistic` and prints the final output to the console.
+When the R code gets executed, it first checks for the availability of `deSolve` package among the installed packages and if found absent installs it. Similar to the R code mentioned in the [previous section](#general-purpose-optimization), it also stores the values passed to it via command-line. It then creates the time sequence for which the output is required, combines the input parameters `r` and `K` into a single vector and setup the initial (state) value to be solved for the associated ordinary differential equation. Finally it makes use of the `ode()` function to solve the equation stored in the variable `logistic` and prints the final output to the console.
 
 #### Ending the simulation after obtaining results back into the OpenModelica model
 
-As described previously, the results printed to the console by R were passed as numeric values back to the OpenModelica model. These numeric values were then stored in the output variables, namely `time_value` and `output_value`. Following is a plot of some of the obtained values -
+As described [previously](#general-purpose-optimization), the results printed to the console by R were passed as numeric values back to the OpenModelica model. These numeric values were then stored in the output variables, namely `time_value` and `output_value`. Following is a plot of some of the obtained values -
 
 <p align="center">
   <img width="641" height="383" alt="Plotting results obtained after simulating the OpenModelica model." src="https://github.com/user-attachments/assets/205843c7-3e45-4e92-b4df-7ecaa6b60f8c" />
