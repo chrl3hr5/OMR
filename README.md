@@ -156,7 +156,7 @@ The simulation ends after returning a CSV file containing values of the output v
 
 1. Download and unzip the OMR GitHub repository files present [here](https://github.com/chrl3hr5/OMR).
 <p align="center">
-  <img width="955" height="489" alt="OMR GitHub repository." src="https://github.com/user-attachments/assets/fa6c84eb-b078-4810-9fea-b12d6b787a32" />
+  <img width="1917" height="1126" alt="OMR GitHub repository." src="https://github.com/user-attachments/assets/af8d7dd0-cb7c-40f0-ae1e-7ab25f42e6c5" />
 </p>
 
 2. Run `msys2_shell` as administrator which is present in the OpenModelica installation directory, as shown in the figure below. `msys2` is a software distribution and building platform for Windows which provides a UNIX-like interface [7].
@@ -167,7 +167,8 @@ The simulation ends after returning a CSV file containing values of the output v
 3. (Application Example 1) **Performing General-purpose Optimization** - Using the built-in `optim()` function of R.
  - Open the `Instructions.txt` file present in the unzipped OMR GitHub repository (OMR-master) folder and follow the instructions written in it.
 <p align="center">
-  <img width="618" height="191" alt="'Instructions.txt' file present in the directory containing the downloaded OMR files." src="https://github.com/user-attachments/assets/2bfab69c-96d2-4d3c-ad9f-98bbd74176d4" />
+  <img width="586" height="366" alt="'Instructions.txt' file present in the directory containing the downloaded OMR files." src="https://github.com/user-attachments/assets/9147bc68-8aef-4997-9785-3650ad96b12a" />
+
 </p>
 
  - Set the directory containing those downloaded OMR files which are required to perform general-purpose optimization as the current working directory.
