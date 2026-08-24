@@ -1,25 +1,22 @@
 <h1 align="center">OMR: Interoperability between R and OpenModelica</h1>
 
+<div align="center">
+  
 [![DOI](https://zenodo.org/badge/287344008.svg)](https://doi.org/10.5281/zenodo.21607359)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub Release](https://img.shields.io/github/v/release/chrl3hr5/OMR)
+
+</div>
 
 ---
 
 # Introduction
 
-<div align="justify">
 OpenModelica is a free and open-source environment for modeling, simulating, optimizing and analyzing complex dynamic systems. It is based on the Modelica modeling language [1]. When this project began, it had limited statistical capabilities.
-</div>
-<br/>
 
-<div align="justify">
 The motivation behind this project was to enhance OpenModelica's statistical functionalities. It was achieved by developing interoperability between it and another open-source programming language known as R. R is a language and environment for statistical computing and graphics [2].
-</div>
-<br/>
 
-<div align="justify">
 It was a challenging problem. At the time of development, there was no interface available for public use, which enables OpenModelica to pass instructions to R in the form of values (numeric, string, etc.) and commands, and obtain back required results. However, it is possible to run external C, Python, Matlab and Julia code in OpenModelica [3].
-</div>
-<br/>
 
 ---
 
@@ -249,17 +246,17 @@ This work was presented at the OpenModelica Annual Workshop 2022; complete detai
 If you use this interface or build upon this project in your research, please cite the repository:
 
 ## Plain Text
-> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.0.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
+> Singh, D., Moudgalya, K., & Palanisamy, A. (2026). OMR: Interoperability between R and OpenModelica (Version 1.1.0) [Computer software]. https://doi.org/10.5281/zenodo.21607360
 
 ## BibTeX
 ```bibtex
 @software{Singh_OMR_Interoperability_between_2026,
 author = {Singh, Digvijay and Moudgalya, Kannan and Palanisamy, Arunkumar},
 doi = {10.5281/zenodo.21607360},
-month = jul,
+month = aug,
 title = {{OMR: Interoperability between R and OpenModelica}},
 url = {https://github.com/chrl3hr5/OMR},
-version = {1.0.0},
+version = {1.1.0},
 year = {2026}
 }
 ```
