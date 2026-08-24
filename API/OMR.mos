@@ -1,4 +1,4 @@
-RHOME := "C:/PROGRA~1/R/R-4.1.1/";
+RHOME := "C:/PROGRA~1/R/R-3.6.3/";
 setCommandLineOptions({"+g=MetaModelica"});
 system(getCompiler() + " -g -c -o Interoperate.o Interoperate.c -I" + RHOME + "include -L" + RHOME + "bin/x64 -lR -lm"); getErrorString();
 system("ar rcs libInteroperate.a Interoperate.o"); getErrorString();

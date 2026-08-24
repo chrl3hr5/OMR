@@ -4,7 +4,7 @@ model R_OM
     input Real V1;
 	input Real V2;
     output Real result;
-  external "C" annotation(Library={"Interoperate","-LC:/PROGRA~1/R/R-4.1.1/bin/x64 -lR -lm"}, LibraryDirectory={"modelica://R_OM"},Include="#include \"Interoperate.h\"");
+  external "C" annotation(Library={"Interoperate","-LC:/PROGRA~1/R/R-3.6.3/bin/x64 -lR -lm"}, LibraryDirectory={"modelica://R_OM"},Include="#include \"Interoperate.h\"");
   end R_Operation;
 
   Real V1, V2, result;
